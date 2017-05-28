@@ -1,6 +1,7 @@
 package marvel
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/dghubble/sling"
@@ -32,4 +33,17 @@ func NewClient(authenticator Authenticator) *Client {
 // Request returns the currently prepared HTTP request.
 func (c *Client) Request() (*http.Request, error) {
 	return c.sling.Request()
+}
+
+// APIError is the error, if any, returned by the service. Authentication error
+// responses will have Code as a string. For usage errors otherwise, Code will be
+// an integer.
+type APIError struct {
+	Code    interface{}
+	Message string
+}
+
+// Error implements the Error interface.
+func (ae *APIError) Error() string {
+	return fmt.Sprintf("marvel: %v %v", ae.Code, ae.Message)
 }
