@@ -9,23 +9,33 @@ import (
 
 const (
 	// APIURL is the base URL for all API requests.
-	APIURL = "https://gateway.marvel.com/v1/public"
+	APIURL = "https://gateway.marvel.com/v1/public/"
 )
 
 // Client is a Marvel client for making all API requests.
 type Client struct {
 	auth  Authenticator
 	sling *sling.Sling
+
+	Characters *CharacterService
 }
 
-// NewClient returns a Client that will authenticate according to the provided
-// authenticator.
-func NewClient(authenticator Authenticator) *Client {
+// NewClient returns an API Client that will authenticate according to the provided
+// authenticator. A custom http client may also be used, otherwise pass nil for the
+// default.
+func NewClient(authenticator Authenticator, httpClient *http.Client) *Client {
+	if httpClient == nil {
+		httpClient = http.DefaultClient
+	}
+	base := sling.New().Client(httpClient).Base(APIURL)
+	base.QueryStruct(authenticator.Auth())
+
 	c := &Client{
 		auth:  authenticator,
-		sling: sling.New().Base(APIURL),
+		sling: base,
+
+		Characters: NewCharacterService(base.New()),
 	}
-	c.sling.QueryStruct(c.auth.Auth())
 
 	return c
 }
