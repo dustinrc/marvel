@@ -4,6 +4,9 @@
 
 # Created by https://www.gitignore.io/api/go,vim,visualstudiocode,windows,linux,osx
 
+########## custom ##########
+fixtures/
+
 ### Go ###
 # Binaries for programs and plugins
 *.exe
