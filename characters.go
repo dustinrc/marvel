@@ -3,6 +3,7 @@ package marvel
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/dghubble/sling"
 )
@@ -21,10 +22,10 @@ func NewCharacterService(sling *sling.Sling) *CharacterService {
 
 // AllWrapped returns all characters that match the query parameters. The character
 // slice will be encapsulated by CharacterDataContainer and CharacterDataWrapper.
-func (chs *CharacterService) AllWrapped() (*CharacterDataWrapper, *http.Response, error) {
+func (chs *CharacterService) AllWrapped(params *CharacterParams) (*CharacterDataWrapper, *http.Response, error) {
 	wrap := &CharacterDataWrapper{}
 	apiErr := &APIError{}
-	resp, err := chs.sling.New().Get("../characters").Receive(wrap, apiErr)
+	resp, err := chs.sling.New().Get("../characters").QueryStruct(params).Receive(wrap, apiErr)
 	if err == nil && apiErr.Code != nil {
 		err = apiErr
 	}
@@ -32,8 +33,8 @@ func (chs *CharacterService) AllWrapped() (*CharacterDataWrapper, *http.Response
 }
 
 // All returns all characters that match the query parameters.
-func (chs *CharacterService) All() ([]Character, error) {
-	wrap, _, err := chs.AllWrapped()
+func (chs *CharacterService) All(params *CharacterParams) ([]Character, error) {
+	wrap, _, err := chs.AllWrapped(params)
 	if err != nil {
 		return nil, err
 	}
@@ -86,4 +87,19 @@ type Character struct {
 	Stories     StoryList  `json:"stories,omitempty"`
 	Events      EventList  `json:"events,omitempty"`
 	Series      SeriesList `json:"series,omitempty"`
+}
+
+// CharacterParams are optional parameters to narrow the character results returned
+// by the API, as well as specifiy the number and order.
+type CharacterParams struct {
+	Name           string    `url:"name,omitempty"`
+	NameStartsWith string    `url:"nameStartsWith,omitempty"`
+	ModifiedSince  time.Time `url:"modifiedSince,omitempty"`
+	Comics         []int     `url:"comics,omitempty"`
+	Series         []int     `url:"series,omitempty"`
+	Events         []int     `url:"events,omitempty"`
+	Stories        []int     `url:"stories,omitempty"`
+	OrderBy        string    `url:"orderBy,omitempty"`
+	Limit          int       `url:"limit,omitempty"`
+	Offset         int       `url:"offset,omitempty"`
 }

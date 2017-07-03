@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dustinrc/marvel"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -12,9 +13,42 @@ func TestCharactersAll(t *testing.T) {
 	c := newTestClient(t, "characters_all")
 	defer c.stopRecorder()
 
-	chars, err := c.Characters.All()
-	assert.NoError(t, err, "Characters.All() returned an error")
-	assert.NotEmpty(t, chars, "Characters.All() returned empty character list")
+	chars, err := c.Characters.All(nil)
+	assert.NoError(t, err, "Characters.All({}) returned an error")
+	assert.NotEmpty(t, chars, "Characters.All({}) returned empty character list")
+}
+
+func TestCharactersAllName(t *testing.T) {
+	c := newTestClient(t, "characters_all_name")
+	defer c.stopRecorder()
+
+	params := &marvel.CharacterParams{Name: "Spider-Man"}
+	chars, err := c.Characters.All(params)
+	assert.NoError(t, err, "Characters.All({}) returned an error")
+	assert.Equal(t, 1009610, chars[0].ID, "Incorrect ID")
+	assert.Contains(t, strings.ToLower(chars[0].Name), "spider-man", "Incorrect Name")
+}
+
+func TestCharactersAllModifiedSince(t *testing.T) {
+	c := newTestClient(t, "characters_all_modified_since")
+	defer c.stopRecorder()
+
+	modDate := time.Date(2016, time.August, 17, 17, 46, 57, 123, time.UTC)
+	params := &marvel.CharacterParams{ModifiedSince: modDate}
+	chars, err := c.Characters.All(params)
+	assert.NoError(t, err, "Characters.All({}) returned an error")
+	assert.Equal(t, 1009268, chars[2].ID, "Incorrect ID")
+	assert.Contains(t, strings.ToLower(chars[2].Name), "deadpool", "Incorrect Name")
+}
+
+func TestCharactersAllBadParam(t *testing.T) {
+	c := newTestClient(t, "characters_all_bad_param")
+	defer c.stopRecorder()
+
+	params := &marvel.CharacterParams{OrderBy: "superpower"}
+	chars, err := c.Characters.All(params)
+	assert.Error(t, err)
+	assert.Empty(t, chars, "Character list should have been empty")
 }
 
 func TestCharactersGetWrapped(t *testing.T) {
