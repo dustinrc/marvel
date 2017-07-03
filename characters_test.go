@@ -60,7 +60,7 @@ func TestCharactersGet(t *testing.T) {
 	assert.True(t, strings.HasSuffix(strings.ToLower(char.Series.CollectionURI), "characters/1017575/series"), "Incorrect series CollectionURI")
 	assert.Equal(t, 25, char.Stories.Available)
 	assert.True(t, strings.HasSuffix(strings.ToLower(char.Stories.CollectionURI), "characters/1017575/stories"), "Incorrect stories CollectionURI")
-	assert.Equal(t, 0, char.Events.Available)
+	assert.Equal(t, 1, char.Events.Available)
 	assert.True(t, strings.HasSuffix(strings.ToLower(char.Events.CollectionURI), "characters/1017575/events"), "Incorrect events CollectionURI")
 	assert.NotEmpty(t, char.URLs, "Incorrect URLs")
 }
