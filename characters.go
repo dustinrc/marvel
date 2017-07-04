@@ -103,3 +103,14 @@ type CharacterParams struct {
 	Limit          int       `url:"limit,omitempty"`
 	Offset         int       `url:"offset,omitempty"`
 }
+
+// CharacterList provides characters related to the parent entity.
+type CharacterList struct {
+	List
+	Items []CharacterSummary `json:"items,omitempty"`
+}
+
+// CharacterSummary provides the summary for a comic related to the parent entity.
+type CharacterSummary struct {
+	Summary
+}

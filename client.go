@@ -18,6 +18,7 @@ type Client struct {
 	sling *sling.Sling
 
 	Characters *CharacterService
+	Comics     *ComicService
 }
 
 // NewClient returns an API Client that will authenticate according to the provided
@@ -35,6 +36,7 @@ func NewClient(authenticator Authenticator, httpClient *http.Client) *Client {
 		sling: base,
 
 		Characters: NewCharacterService(base.New()),
+		Comics:     NewComicService(base.New()),
 	}
 
 	return c
