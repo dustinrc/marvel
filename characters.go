@@ -110,7 +110,7 @@ type CharacterList struct {
 	Items []CharacterSummary `json:"items,omitempty"`
 }
 
-// CharacterSummary provides the summary for a comic related to the parent entity.
+// CharacterSummary provides the summary for a character related to the parent entity.
 type CharacterSummary struct {
 	Summary
 }
