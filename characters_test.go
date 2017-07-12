@@ -41,6 +41,17 @@ func TestCharactersAllModifiedSince(t *testing.T) {
 	assert.Contains(t, strings.ToLower(chars[2].Name), "deadpool", "Incorrect Name")
 }
 
+func TestCharactersAllOnlyInComics(t *testing.T) {
+	c := newTestClient(t, "characters_all_only_in_comics")
+	defer c.stopRecorder()
+
+	params := &marvel.CharacterParams{Comics: []int{11200, 22222}}
+	chars, err := c.Characters.All(params)
+	assert.NoError(t, err, "Characters.All({}) returned an error")
+	assert.Equal(t, 1009515, chars[0].ID, "Incorrect ID")
+	assert.Equal(t, 1010791, chars[1].ID, "Incorrect ID")
+}
+
 func TestCharactersAllBadParam(t *testing.T) {
 	c := newTestClient(t, "characters_all_bad_param")
 	defer c.stopRecorder()
