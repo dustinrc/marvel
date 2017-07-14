@@ -1,13 +1,73 @@
 package marvel_test
 
 import (
+	"strings"
 	"testing"
 	"time"
 
-	"strings"
-
+	"github.com/dustinrc/marvel"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestComicsAll(t *testing.T) {
+	c := newTestClient(t, "comics_all")
+	defer c.stopRecorder()
+
+	comics, err := c.Comics.All(nil)
+	assert.NoError(t, err, "Comics.All({}) returned an error")
+	assert.NotEmpty(t, comics, "Comics.All({}) returned empty comic list")
+}
+
+func TestComicsAllFormat(t *testing.T) {
+	c := newTestClient(t, "comics_all_format")
+	defer c.stopRecorder()
+
+	params := &marvel.ComicParams{Format: "graphic novel"}
+	comics, err := c.Comics.All(params)
+	assert.NoError(t, err, "Comics.All({}) returned an error")
+	assert.Equal(t, 52761, comics[0].ID, "Incorrect ID")
+	assert.Contains(t, strings.ToLower(comics[0].Title), "thanos", "Incorrect Title")
+}
+
+func TestComicsAllNoVariants(t *testing.T) {
+	t.Run("NoVariant is false", func(t *testing.T) {
+		c := newTestClient(t, "comics_all_no_variant_false")
+		defer c.stopRecorder()
+
+		params := &marvel.ComicParams{
+			NoVariants: false,
+			UPC:        "75960608297101621",
+		}
+		comics, err := c.Comics.All(params)
+		assert.NoError(t, err, "Comics.All({}) returned an error")
+		assert.Equal(t, 58584, comics[0].ID, "Incorrect ID")
+	})
+	t.Run("NoVariant is true", func(t *testing.T) {
+		c := newTestClient(t, "comics_all_no_variant_true")
+		defer c.stopRecorder()
+
+		params := &marvel.ComicParams{
+			NoVariants: true,
+			UPC:        "75960608297101621",
+		}
+		comics, err := c.Comics.All(params)
+		assert.NoError(t, err, "Comics.All({}) returned an error")
+		assert.Empty(t, comics, "Comic list should have been empty")
+	})
+}
+
+func TestComicsAllDateRange(t *testing.T) {
+	c := newTestClient(t, "comics_all_date_range")
+	defer c.stopRecorder()
+
+	sDate := time.Date(2016, time.August, 17, 17, 46, 57, 123, time.UTC)
+	eDate := time.Date(2016, time.September, 17, 17, 46, 57, 123, time.UTC)
+	params := &marvel.ComicParams{DateRange: []time.Time{sDate, eDate}}
+	comics, err := c.Comics.All(params)
+	assert.NoError(t, err, "Comics.All({}) returned an error")
+	assert.Equal(t, 59000, comics[0].ID, "Incorrect ID")
+	assert.Contains(t, strings.ToLower(comics[0].Title), "gwenpool", "Incorrect Title")
+}
 
 func TestComicsGet(t *testing.T) {
 	c := newTestClient(t, "comics_get")
