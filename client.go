@@ -19,6 +19,7 @@ type Client struct {
 
 	Characters *CharacterService
 	Comics     *ComicService
+	Creators   *CreatorService
 }
 
 // NewClient returns an API Client that will authenticate according to the provided
@@ -37,6 +38,7 @@ func NewClient(authenticator Authenticator, httpClient *http.Client) *Client {
 
 		Characters: NewCharacterService(base.New()),
 		Comics:     NewComicService(base.New()),
+		Creators:   NewCreatorService(base.New()),
 	}
 
 	return c
