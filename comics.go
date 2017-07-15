@@ -76,35 +76,35 @@ type ComicDataContainer struct {
 
 // Comic represents a Marvel comic.
 type Comic struct {
-	ID                 int
-	DigitalID          int
-	Title              string
-	IssueNumber        int
-	VariantDescription string
-	Description        string
-	Modified           Time
-	ISBN               string
-	UPC                string
-	DiamondCode        string
-	EAN                string
-	ISSN               string
-	Format             string
-	PageCount          int
-	TextObjects        []TextObject
-	ResourceURI        string
-	URLs               []URL
-	Series             SeriesSummary
-	Variants           []ComicSummary
-	Collections        []ComicSummary
-	CollectedIssues    []ComicSummary
-	Dates              []ComicDate
-	Prices             []ComicPrice
-	Thumbnail          Image
-	Images             []Image
-	Creators           CreatorList
-	Characters         CharacterList
-	Stories            StoryList
-	Events             EventList
+	ID                 int            `json:"id,omitempty"`
+	DigitalID          int            `json:"digitalId,omitempty"`
+	Title              string         `json:"title,omitempty"`
+	IssueNumber        int            `json:"issueNumber,omitempty"`
+	VariantDescription string         `json:"variantDescription,omitempty"`
+	Description        string         `json:"description,omitempty"`
+	Modified           Time           `json:"modified,omitempty"`
+	ISBN               string         `json:"isbn,omitempty"`
+	UPC                string         `json:"upc,omitempty"`
+	DiamondCode        string         `json:"diamondCode,omitempty"`
+	EAN                string         `json:"ean,omitempty"`
+	ISSN               string         `json:"issn,omitempty"`
+	Format             string         `json:"format,omitempty"`
+	PageCount          int            `json:"pageCount,omitempty"`
+	TextObjects        []TextObject   `json:"textObjects,omitempty"`
+	ResourceURI        string         `json:"resourceURI,omitempty"`
+	URLs               []URL          `json:"urls,omitempty"`
+	Series             SeriesSummary  `json:"series,omitempty"`
+	Variants           []ComicSummary `json:"variants,omitempty"`
+	Collections        []ComicSummary `json:"collections,omitempty"`
+	CollectedIssues    []ComicSummary `json:"collectedIssues,omitempty"`
+	Dates              []ComicDate    `json:"dates,omitempty"`
+	Prices             []ComicPrice   `json:"prices,omitempty"`
+	Thumbnail          Image          `json:"thumbnail,omitempty"`
+	Images             []Image        `json:"images,omitempty"`
+	Creators           CreatorList    `json:"creators,omitempty"`
+	Characters         CharacterList  `json:"characters,omitempty"`
+	Stories            StoryList      `json:"stories,omitempty"`
+	Events             EventList      `json:"events,omitempty"`
 }
 
 // ComicParams are optional parameters to narrow the comic results returned
