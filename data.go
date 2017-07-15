@@ -53,9 +53,9 @@ func (tm *Time) UnmarshalJSON(b []byte) (err error) {
 
 // TextObject represents a descriptive text blurb for the parent entity.
 type TextObject struct {
-	Type     string
-	Language string
-	Text     string
+	Type     string `json:"type,omitempty"`
+	Language string `json:"language,omitempty"`
+	Text     string `json:"text,omitempty"`
 }
 
 // List provides the common list attributes to unmarshal the API's response.
