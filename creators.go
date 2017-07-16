@@ -23,11 +23,7 @@ func NewCreatorService(sling *sling.Sling) *CreatorService {
 // details will be encapsulated by CreatorDataContainer and CreatorDataWrapper.
 func (ctrs *CreatorService) GetWrapped(creatorID int) (*CreatorDataWrapper, *http.Response, error) {
 	wrap := &CreatorDataWrapper{}
-	apiErr := &APIError{}
-	resp, err := ctrs.sling.New().Get(fmt.Sprintf("%d", creatorID)).Receive(wrap, apiErr)
-	if err == nil && apiErr.Code != nil {
-		err = apiErr
-	}
+	resp, err := receiveWrapped(ctrs.sling, fmt.Sprintf("%d", creatorID), wrap, nil)
 	return wrap, resp, err
 }
 

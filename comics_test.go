@@ -112,3 +112,12 @@ func TestComicsGet(t *testing.T) {
 	assert.Equal(t, 0, comic.Events.Available)
 	assert.True(t, strings.HasSuffix(strings.ToLower(comic.Events.CollectionURI), "comics/61292/events"), "Incorrect events CollectionURI")
 }
+
+func TestComicGetBadID(t *testing.T) {
+	c := newTestClient(t, "comics_get_bad_id")
+	defer c.stopRecorder()
+
+	comic, err := c.Comics.Get(-1)
+	assert.Error(t, err)
+	assert.Nil(t, comic, "Comic should have been nil")
+}

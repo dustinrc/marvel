@@ -24,32 +24,21 @@ func NewComicService(sling *sling.Sling) *ComicService {
 // slice will be encapsulated by ComicDataContainer and ComicDataWrapper.
 func (cos *ComicService) AllWrapped(params *ComicParams) (*ComicDataWrapper, *http.Response, error) {
 	wrap := &ComicDataWrapper{}
-	apiErr := &APIError{}
-	resp, err := cos.sling.New().Get("../comics").QueryStruct(params).Receive(wrap, apiErr)
-	if err == nil && apiErr.Code != nil {
-		err = apiErr
-	}
+	resp, err := receiveWrapped(cos.sling, "../comics", wrap, params)
 	return wrap, resp, err
 }
 
 // All returns all comics that match the query parameters.
 func (cos *ComicService) All(params *ComicParams) ([]Comic, error) {
 	wrap, _, err := cos.AllWrapped(params)
-	if err != nil {
-		return nil, err
-	}
-	return wrap.Data.Results, nil
+	return wrap.Data.Results, err
 }
 
 // GetWrapped returns the comic associated with the given ID. The comic
 // details will be encapsulated by ComicDataContainer and ComicDataWrapper.
 func (cos *ComicService) GetWrapped(comicID int) (*ComicDataWrapper, *http.Response, error) {
 	wrap := &ComicDataWrapper{}
-	apiErr := &APIError{}
-	resp, err := cos.sling.New().Get(fmt.Sprintf("%d", comicID)).Receive(wrap, apiErr)
-	if err == nil && apiErr.Code != nil {
-		err = apiErr
-	}
+	resp, err := receiveWrapped(cos.sling, fmt.Sprintf("%d", comicID), wrap, nil)
 	return wrap, resp, err
 }
 

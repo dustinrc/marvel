@@ -24,32 +24,21 @@ func NewCharacterService(sling *sling.Sling) *CharacterService {
 // slice will be encapsulated by CharacterDataContainer and CharacterDataWrapper.
 func (chs *CharacterService) AllWrapped(params *CharacterParams) (*CharacterDataWrapper, *http.Response, error) {
 	wrap := &CharacterDataWrapper{}
-	apiErr := &APIError{}
-	resp, err := chs.sling.New().Get("../characters").QueryStruct(params).Receive(wrap, apiErr)
-	if err == nil && apiErr.Code != nil {
-		err = apiErr
-	}
+	resp, err := receiveWrapped(chs.sling, "../characters", wrap, params)
 	return wrap, resp, err
 }
 
 // All returns all characters that match the query parameters.
 func (chs *CharacterService) All(params *CharacterParams) ([]Character, error) {
 	wrap, _, err := chs.AllWrapped(params)
-	if err != nil {
-		return nil, err
-	}
-	return wrap.Data.Results, nil
+	return wrap.Data.Results, err
 }
 
 // GetWrapped returns the character associated with the given ID. The character
 // details will be encapsulated by CharacterDataContainer and CharacterDataWrapper.
 func (chs *CharacterService) GetWrapped(characterID int) (*CharacterDataWrapper, *http.Response, error) {
 	wrap := &CharacterDataWrapper{}
-	apiErr := &APIError{}
-	resp, err := chs.sling.New().Get(fmt.Sprintf("%d", characterID)).Receive(wrap, apiErr)
-	if err == nil && apiErr.Code != nil {
-		err = apiErr
-	}
+	resp, err := receiveWrapped(chs.sling, fmt.Sprintf("%d", characterID), wrap, nil)
 	return wrap, resp, err
 }
 

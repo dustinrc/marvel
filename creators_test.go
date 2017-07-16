@@ -35,3 +35,12 @@ func TestCreatorsGet(t *testing.T) {
 	assert.True(t, strings.HasSuffix(strings.ToLower(creator.Events.CollectionURI), "creators/4545/events"), "Incorrect events CollectionURI")
 	assert.NotEmpty(t, creator.URLs, "Incorrect URLs")
 }
+
+func TestCreatorGetBadID(t *testing.T) {
+	c := newTestClient(t, "creators_get_bad_id")
+	defer c.stopRecorder()
+
+	creator, err := c.Creators.Get(-1)
+	assert.Error(t, err)
+	assert.Nil(t, creator, "Creator should have been nil")
+}

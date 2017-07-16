@@ -49,6 +49,16 @@ func (c *Client) Request() (*http.Request, error) {
 	return c.sling.Request()
 }
 
+// receiveWrapped prepares a request and unmarshals it into the provided wrapper.
+func receiveWrapped(sling *sling.Sling, pathURL string, wrapperV, paramsV interface{}) (*http.Response, error) {
+	apiErr := &APIError{}
+	resp, err := sling.New().Get(pathURL).QueryStruct(paramsV).Receive(wrapperV, apiErr)
+	if err == nil && apiErr.Code != nil {
+		err = apiErr
+	}
+	return resp, err
+}
+
 // APIError is the error, if any, returned by the service. Authentication error
 // responses will have Code as a string. For usage errors otherwise, Code will be
 // an integer.
