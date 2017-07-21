@@ -5,8 +5,29 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dustinrc/marvel"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestCreatorsAll(t *testing.T) {
+	c := newTestClient(t, "creators_all")
+	defer c.stopRecorder()
+
+	creators, err := c.Creators.All(nil)
+	assert.NoError(t, err, "Creators.All({}) returned an error")
+	assert.NotEmpty(t, creators, "Creators.All({}) return empty creator list")
+}
+
+func TestCreatorsAllMiddleNameStartsWith(t *testing.T) {
+	c := newTestClient(t, "creators_all_middle_starts_with")
+	defer c.stopRecorder()
+
+	params := &marvel.CreatorParams{MiddleNameStartsWith: "manu"}
+	creators, err := c.Creators.All(params)
+	assert.NoError(t, err, "Creator.All({}) returned and error")
+	assert.Equal(t, 12533, creators[1].ID, "Incorrect ID")
+	assert.Contains(t, strings.ToLower(creators[0].MiddleName), "manu", "Incorrect MiddleName")
+}
 
 func TestCreatorsGet(t *testing.T) {
 	c := newTestClient(t, "creators_get")
