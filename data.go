@@ -41,11 +41,13 @@ type Image struct {
 // Time allows unique parsing of the time format given in the API's responses.
 type Time struct{ time.Time }
 
-// UnmarshalJSON implements the json.Unmarshaler interface. The timezone format
-// returned by the API does not parse using any of the default formats in the time
+// UnmarshalJSON implements the json.Unmarshaler interface. The various time formats
+// returned by the API do not parse using any of the default formats in the time
 // package.
 func (tm *Time) UnmarshalJSON(b []byte) (err error) {
 	if tempTime, err := time.Parse(`"2006-01-02T15:04:05Z0700"`, string(b)); err == nil {
+		tm.Time = tempTime
+	} else if tempTime, err = time.Parse(`"2006-01-02 15:04:05"`, string(b)); err == nil {
 		tm.Time = tempTime
 	}
 	return
