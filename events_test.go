@@ -5,8 +5,29 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dustinrc/marvel"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestEventsAll(t *testing.T) {
+	c := newTestClient(t, "events_all")
+	defer c.stopRecorder()
+
+	events, err := c.Events.All(nil)
+	assert.NoError(t, err, "Events.All({}) returned and error")
+	assert.NotEmpty(t, events, "Events.All({}) returned empty event list")
+}
+
+func TestEventsAllCharacters(t *testing.T) {
+	c := newTestClient(t, "events_all_characters")
+	defer c.stopRecorder()
+
+	params := &marvel.EventParams{Characters: []int{1010817}}
+	events, err := c.Events.All(params)
+	assert.NoError(t, err, "Events.All({}) returned an error")
+	assert.Equal(t, 318, events[0].ID, "Incorrect ID")
+	assert.Equal(t, 277, events[3].ID, "Incorrect ID")
+}
 
 func TestEventGet(t *testing.T) {
 	c := newTestClient(t, "events_get")

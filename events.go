@@ -3,6 +3,7 @@ package marvel
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/dghubble/sling"
 )
@@ -17,6 +18,20 @@ func NewEventService(sling *sling.Sling) *EventService {
 	return &EventService{
 		sling: sling.Path("events/"),
 	}
+}
+
+// AllWrapped returns all events that match the query parameters. The event
+// slice will be encapsulated by EventDataContainer and EventDataWrapper.
+func (evs *EventService) AllWrapped(params *EventParams) (*EventDataWrapper, *http.Response, error) {
+	wrap := &EventDataWrapper{}
+	resp, err := receiveWrapped(evs.sling, "../events", wrap, params)
+	return wrap, resp, err
+}
+
+// All returns all events that match the query parameters.
+func (evs *EventService) All(params *EventParams) ([]Event, error) {
+	wrap, _, err := evs.AllWrapped(params)
+	return wrap.Data.Results, err
 }
 
 // GetWrapped returns the event associated with the given ID. The event
@@ -66,6 +81,22 @@ type Event struct {
 	Creators    CreatorList   `json:"creators,omitempty"`
 	Next        EventSummary  `json:"next,omitempty"`
 	Previous    EventSummary  `json:"previous,omitempty"`
+}
+
+// EventParams are optional parameters to narrow the event results returned
+// by the API, as well as specify the number and order.
+type EventParams struct {
+	Name           string    `url:"name,omitempty"`
+	NameStartsWith string    `url:"nameStartsWith,omitempty"`
+	ModifiedSince  time.Time `url:"modifiedSince,omitempty"`
+	Creators       []int     `url:"creators,omitempty"`
+	Characters     []int     `url:"characters,omitempty"`
+	Series         []int     `url:"series,omitempty"`
+	Comics         []int     `url:"comics,omitempty"`
+	Stories        []int     `url:"stories,omitempty"`
+	OrderBy        string    `url:"orderBy,omitempty"`
+	Limit          int       `url:"limit,omitempty"`
+	Offset         int       `url:"offset,omitempty"`
 }
 
 // EventList provides event related to the parent entity.
