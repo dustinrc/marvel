@@ -82,7 +82,7 @@ type Creator struct {
 }
 
 // CreatorParams are optional parameters to narrow the creator results returned
-// by the API, as well as specifiy the number and order.
+// by the API, as well as specify the number and order.
 type CreatorParams struct {
 	FirstName            string    `url:"firstName,omitempty"`
 	MiddleName           string    `url:"middleName,omitempty"`

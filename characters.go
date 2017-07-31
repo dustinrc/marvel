@@ -79,7 +79,7 @@ type Character struct {
 }
 
 // CharacterParams are optional parameters to narrow the character results returned
-// by the API, as well as specifiy the number and order.
+// by the API, as well as specify the number and order.
 type CharacterParams struct {
 	Name           string    `url:"name,omitempty"`
 	NameStartsWith string    `url:"nameStartsWith,omitempty"`

@@ -97,7 +97,7 @@ type Comic struct {
 }
 
 // ComicParams are optional parameters to narrow the comic results returned
-// by the API, as well as specifiy the number and order.
+// by the API, as well as specify the number and order.
 type ComicParams struct {
 	Format            string      `url:"format,omitempty"`
 	FormatType        string      `url:"formatType,omitempty"`
