@@ -43,7 +43,6 @@ func TestEventGet(t *testing.T) {
 	assert.NotEmpty(t, event.URLs, "Incorrect URLs")
 	assert.True(t, time.Now().After(event.Modified.Time), "Incorrect ModifiedTime")
 	assert.True(t, event.End.Time.After(event.Start.Time), "Incorrect Start / End - ", event.Start.Time, " / ", event.End.Time)
-	// assert.True(t, event.End.After(event.Start), "Incorrect Start / End - ", event.Start, " / ", event.End)
 	assert.NotEmpty(t, event.Thumbnail, "Incorrect Thumbnail")
 	assert.Equal(t, 30, event.Creators.Available)
 	assert.True(t, strings.HasSuffix(strings.ToLower(event.Creators.CollectionURI), "events/314/creators"), "Incorrect creators CollectionURI")
