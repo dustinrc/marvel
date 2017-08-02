@@ -82,7 +82,7 @@ type Comic struct {
 	TextObjects        []TextObject   `json:"textObjects,omitempty"`
 	ResourceURI        string         `json:"resourceURI,omitempty"`
 	URLs               []URL          `json:"urls,omitempty"`
-	Series             SeriesSummary  `json:"series,omitempty"`
+	Series             *SeriesSummary `json:"series,omitempty"`
 	Variants           []ComicSummary `json:"variants,omitempty"`
 	Collections        []ComicSummary `json:"collections,omitempty"`
 	CollectedIssues    []ComicSummary `json:"collectedIssues,omitempty"`

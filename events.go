@@ -79,8 +79,8 @@ type Event struct {
 	Series      SeriesList    `json:"series,omitempty"`
 	Characters  CharacterList `json:"characters,omitempty"`
 	Creators    CreatorList   `json:"creators,omitempty"`
-	Next        EventSummary  `json:"next,omitempty"`
-	Previous    EventSummary  `json:"previous,omitempty"`
+	Next        *EventSummary `json:"next,omitempty"`
+	Previous    *EventSummary `json:"previous,omitempty"`
 }
 
 // EventParams are optional parameters to narrow the event results returned
