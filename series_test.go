@@ -5,8 +5,29 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dustinrc/marvel"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestSeriesAll(t *testing.T) {
+	c := newTestClient(t, "series_all")
+	defer c.stopRecorder()
+
+	series, err := c.Series.All(nil)
+	assert.NoError(t, err, "Series.All({}) returned an error")
+	assert.NotEmpty(t, series, "Series.All({}) returned emtpy series list")
+}
+
+func TestSeriesAllSeriesType(t *testing.T) {
+	c := newTestClient(t, "series_all_series_type")
+	defer c.stopRecorder()
+
+	params := &marvel.SeriesParams{SeriesType: "one shot"}
+	series, err := c.Series.All(params)
+	assert.NoError(t, err, "Series.All({}) returned an error")
+	assert.Equal(t, 8925, series[11].ID, "Incorrect ID")
+	assert.Equal(t, 1, series[11].Comics.Available)
+}
 
 func TestSeriesGet(t *testing.T) {
 	c := newTestClient(t, "series_get")

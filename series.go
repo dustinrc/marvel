@@ -3,6 +3,7 @@ package marvel
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/dghubble/sling"
 )
@@ -17,6 +18,20 @@ func NewSeriesService(sling *sling.Sling) *SeriesService {
 	return &SeriesService{
 		sling: sling.Path("series/"),
 	}
+}
+
+// AllWrapped returns all series that match the query parameters. The series
+// slice will be encapsulated by SeriesDataContainer and SeriesDataWrapper.
+func (srs *SeriesService) AllWrapped(params *SeriesParams) (*SeriesDataWrapper, *http.Response, error) {
+	wrap := &SeriesDataWrapper{}
+	resp, err := receiveWrapped(srs.sling, "../series", wrap, params)
+	return wrap, resp, err
+}
+
+// All returns all series that match the query parameters.
+func (srs *SeriesService) All(params *SeriesParams) ([]Series, error) {
+	wrap, _, err := srs.AllWrapped(params)
+	return wrap.Data.Results, err
 }
 
 // GetWrapped returns the series associated with the given ID. The series
@@ -68,6 +83,25 @@ type Series struct {
 	Creators    CreatorList    `json:"creators,omitempty"`
 	Next        *SeriesSummary `json:"next,omitempty"`
 	Previous    *SeriesSummary `json:"previous,omitempty"`
+}
+
+// SeriesParams are optional parameters to narrow the series results returned
+// by the API, as well as specify the number and order.
+type SeriesParams struct {
+	Title           string    `url:"title,omitempty"`
+	TitleStartsWith string    `url:"titleStartsWith,omitempty"`
+	StartYear       int       `url:"startYear,omitempty"`
+	ModifiedSince   time.Time `url:"modifiedSince,omitempty"`
+	Comics          []int     `url:"comics,omitempty"`
+	Stories         []int     `url:"stories,omitempty"`
+	Events          []int     `url:"events,omitempty"`
+	Creators        []int     `url:"creators,omitempty"`
+	Characters      []int     `url:"characters,omitempty"`
+	SeriesType      string    `url:"seriesType,omitempty"`
+	Contains        string    `url:"contains,omitempty"`
+	OrderBy         string    `url:"orderBy,omitempty"`
+	Limit           int       `url:"limit,omitempty"`
+	Offset          int       `url:"offset,omitempty"`
 }
 
 // SeriesList provides series related to the parent entity.
