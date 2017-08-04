@@ -65,8 +65,8 @@ func TestComicsAllDateRange(t *testing.T) {
 	params := &marvel.ComicParams{DateRange: []time.Time{sDate, eDate}}
 	comics, err := c.Comics.All(params)
 	assert.NoError(t, err, "Comics.All({}) returned an error")
-	assert.Equal(t, 59000, comics[0].ID, "Incorrect ID")
-	assert.Contains(t, strings.ToLower(comics[0].Title), "gwenpool", "Incorrect Title")
+	assert.Equal(t, 57387, comics[0].ID, "Incorrect ID")
+	assert.Contains(t, strings.ToLower(comics[0].Title), "black panther", "Incorrect Title")
 }
 
 func TestComicsGet(t *testing.T) {
