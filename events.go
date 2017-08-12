@@ -73,7 +73,7 @@ type Event struct {
 	Modified    Time          `json:"modified,omitempty"`
 	Start       Time          `json:"start,omitempty"`
 	End         Time          `json:"end,omitempty"`
-	Thumbnail   Image         `json:"thumbnail,omitempty"`
+	Thumbnail   *Image         `json:"thumbnail,omitempty"`
 	Comics      ComicList     `json:"comics,omitempty"`
 	Stories     StoryList     `json:"stories,omitempty"`
 	Series      SeriesList    `json:"series,omitempty"`

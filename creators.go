@@ -74,7 +74,7 @@ type Creator struct {
 	Modified    Time       `json:"modified,omitempty"`
 	ResourceURI string     `json:"resourceURI,omitempty"`
 	URLs        []URL      `json:"urls,omitempty"`
-	Thumbnail   Image      `json:"thumbnail,omitempty"`
+	Thumbnail   *Image      `json:"thumbnail,omitempty"`
 	Series      SeriesList `json:"series,omitempty"`
 	Stories     StoryList  `json:"stories,omitempty"`
 	Comics      ComicList  `json:"comics,omitempty"`

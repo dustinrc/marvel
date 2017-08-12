@@ -102,7 +102,7 @@ func TestComicsGet(t *testing.T) {
 	assert.Equal(t, "printprice", strings.ToLower(comic.Prices[0].Type), "Incorrect Prices.Type")
 	assert.Equal(t, 2.99, comic.Prices[0].Price, "Incorrect Prices.Price")
 	assert.NotEmpty(t, comic.Thumbnail, "Incorrect Thumbnail")
-	assert.Equal(t, comic.Thumbnail, comic.Images[0], "Incorrect Images")
+	assert.Equal(t, *comic.Thumbnail, comic.Images[0], "Incorrect Images")
 	assert.Equal(t, 1, comic.Creators.Available)
 	assert.True(t, strings.HasSuffix(strings.ToLower(comic.Creators.CollectionURI), "comics/61292/creators"), "Incorrect creators CollectionURI")
 	assert.Equal(t, 2, comic.Characters.Available)

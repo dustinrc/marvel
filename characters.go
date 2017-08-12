@@ -71,7 +71,7 @@ type Character struct {
 	Modified    Time       `json:"modified,omitempty"`
 	ResourceURI string     `json:"resourceURI,omitempty"`
 	URLs        []URL      `json:"urls,omitempty"`
-	Thumbnail   Image      `json:"thumbnail,omitempty"`
+	Thumbnail   *Image      `json:"thumbnail,omitempty"`
 	Comics      ComicList  `json:"comics,omitempty"`
 	Stories     StoryList  `json:"stories,omitempty"`
 	Events      EventList  `json:"events,omitempty"`

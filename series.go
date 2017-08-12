@@ -75,7 +75,7 @@ type Series struct {
 	Rating      string         `json:"rating,omitempty"`
 	Type        string         `json:"type,omitempty"`
 	Modified    Time           `json:"modified,omitempty"`
-	Thumbnail   Image          `json:"thumbnail,omitempty"`
+	Thumbnail   *Image          `json:"thumbnail,omitempty"`
 	Comics      ComicList      `json:"comics,omitempty"`
 	Stories     StoryList      `json:"stories,omitempty"`
 	Events      EventList      `json:"events,omitempty"`

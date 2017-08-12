@@ -88,7 +88,7 @@ type Comic struct {
 	CollectedIssues    []ComicSummary `json:"collectedIssues,omitempty"`
 	Dates              []ComicDate    `json:"dates,omitempty"`
 	Prices             []ComicPrice   `json:"prices,omitempty"`
-	Thumbnail          Image          `json:"thumbnail,omitempty"`
+	Thumbnail          *Image          `json:"thumbnail,omitempty"`
 	Images             []Image        `json:"images,omitempty"`
 	Creators           CreatorList    `json:"creators,omitempty"`
 	Characters         CharacterList  `json:"characters,omitempty"`
