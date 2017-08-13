@@ -5,8 +5,29 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dustinrc/marvel"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestStoriesAll(t *testing.T) {
+	c := newTestClient(t, "stories_all")
+	defer c.stopRecorder()
+
+	stories, err := c.Stories.All(nil)
+	assert.NoError(t, err, "Stories.All({}) returned an error")
+	assert.NotEmpty(t, stories, "Stories.All({}) returned empty stories list")
+}
+
+func TestStoriesAllOrderBy(t *testing.T) {
+	c := newTestClient(t, "stories_all_order_by")
+	defer c.stopRecorder()
+
+	params := &marvel.StoryParams{OrderBy: "id"}
+	stories, err := c.Stories.All(params)
+	assert.NoError(t, err, "Stories.All({}) returned an error")
+	assert.Equal(t, 7, stories[0].ID, "Incorrect ID")
+	assert.Equal(t, 1, stories[0].Comics.Available)
+}
 
 func TestStoriesGet(t *testing.T) {
 	c := newTestClient(t, "stories_get")

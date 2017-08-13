@@ -3,6 +3,7 @@ package marvel
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/dghubble/sling"
 )
@@ -17,6 +18,20 @@ func NewStoryService(sling *sling.Sling) *StoryService {
 	return &StoryService{
 		sling: sling.Path("stories/"),
 	}
+}
+
+// AllWrapped returns all stories that match the query parameters. The story
+// slice will be encapsulated by StoryDataContainer and StoryDataWrapper.
+func (sts *StoryService) AllWrapped(params *StoryParams) (*StoryDataWrapper, *http.Response, error) {
+	wrap := &StoryDataWrapper{}
+	resp, err := receiveWrapped(sts.sling, "../stories", wrap, params)
+	return wrap, resp, err
+}
+
+// All returns all stories that match the query parameters.
+func (sts *StoryService) All(params *StoryParams) ([]Story, error) {
+	wrap, _, err := sts.AllWrapped(params)
+	return wrap.Data.Results, err
 }
 
 // GetWrapped returns the story associated with the given ID. The story
@@ -63,6 +78,20 @@ type Story struct {
 	Characters    CharacterList `json:"characters,omitempty"`
 	Creators      CreatorList   `json:"creators,omitempty"`
 	OriginalIssue *ComicSummary `json:"originalIssue,omitempty"`
+}
+
+// StoryParams are optional parameters to narrow the story results returned
+// by the API, as well as specify the number and order.
+type StoryParams struct {
+	ModifiedSince time.Time `url:"modified_since,omitempty"`
+	Comics        []int     `url:"comics,omitempty"`
+	Series        []int     `url:"series,omitempty"`
+	Events        []int     `url:"events,omitempty"`
+	Creators      []int     `url:"creators,omitempty"`
+	Characters    []int     `url:"characters,omitempty"`
+	OrderBy       string    `url:"orderBy,omitempty"`
+	Limit         int       `url:"limit,omitempty"`
+	Offset        int       `url:"offset,omitempty"`
 }
 
 // StoryList provides stories related to the parent entity.
