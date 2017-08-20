@@ -20,3 +20,14 @@ func TestServerSideAuth(t *testing.T) {
 
 	assert.Equal(t, expected, actual)
 }
+
+func TestClientSideAuth(t *testing.T) {
+	auth := marvel.NewClientSideAuth("1234")
+
+	expected := &marvel.AuthParams{
+		PublicKey: "1234",
+	}
+	actual := auth.Auth()
+
+	assert.Equal(t, expected, actual)
+}

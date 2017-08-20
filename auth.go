@@ -65,3 +65,25 @@ func (ssa *ServerSideAuth) Auth() *AuthParams {
 func (ssa *ServerSideAuth) Timestamper(timestamper TimestampFunc) {
 	ssa.tsFunc = timestamper
 }
+
+// ClientSideAuth holds the public API key necessary for client side authentication,
+// enabling this package to be used with GopherJS. Client side requests (i.e.,
+// browser-based) must originate from a pre-authorized web site or browser extension
+// URL. Authorized sites and extensions are configurable from the Marvel developer portal.
+type ClientSideAuth struct {
+	pubKey string
+}
+
+// NewClientSideAuth returns a ClientSideAuth using the provided public API key.
+func NewClientSideAuth(publicKey string) *ClientSideAuth {
+	return &ClientSideAuth{
+		pubKey: publicKey,
+	}
+}
+
+// Auth implements the Authenticator interface.
+func (csa *ClientSideAuth) Auth() *AuthParams {
+	return &AuthParams{
+		PublicKey: csa.pubKey,
+	}
+}
