@@ -83,7 +83,7 @@ type Story struct {
 // StoryParams are optional parameters to narrow the story results returned
 // by the API, as well as specify the number and order.
 type StoryParams struct {
-	ModifiedSince time.Time `url:"modified_since,omitempty"`
+	ModifiedSince time.Time `url:"modifiedSince,omitempty"`
 	Comics        []int     `url:"comics,omitempty"`
 	Series        []int     `url:"series,omitempty"`
 	Events        []int     `url:"events,omitempty"`

@@ -121,7 +121,7 @@ type ComicParams struct {
 	Series            []int       `url:"series,omitempty"`
 	Events            []int       `url:"events,omitempty"`
 	Stories           []int       `url:"stories,omitempty"`
-	SharedAppearances []int       `url:"shared_appearances,omitempty"`
+	SharedAppearances []int       `url:"sharedAppearances,omitempty"`
 	Collaborators     []int       `url:"collaborators,omitempty"`
 	OrderBy           string      `url:"orderBy,omitempty"`
 	Limit             int         `url:"limit,omitempty"`
