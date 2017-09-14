@@ -118,3 +118,59 @@ func TestCharacterGetBadID(t *testing.T) {
 	assert.Error(t, err)
 	assert.Nil(t, char, "Character should have been nil")
 }
+
+func TestCharactersComics(t *testing.T) {
+	c1 := newTestClient(t, "characters_comics1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "characters_comics2")
+	defer c2.stopRecorder()
+
+	comicsFromCharacter, err := c1.Characters.Comics(1009149, nil)
+	assert.NoError(t, err, "Characters.Comics() returned an error for 1009149")
+	params := &marvel.ComicParams{Characters: []int{1009149}}
+	comicsLimitedToCharacter, err := c2.Comics.All(params)
+	assert.NoError(t, err, "Comics.All({}) returned an error")
+	assert.Equal(t, comicsLimitedToCharacter, comicsFromCharacter, "Comic results do not match")
+}
+
+func TestCharactersEvents(t *testing.T) {
+	c1 := newTestClient(t, "characters_events1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "characters_events2")
+	defer c2.stopRecorder()
+
+	eventsFromCharacter, err := c1.Characters.Events(1010817, nil)
+	assert.NoError(t, err, "Characters.Events() returned an error for 1010817")
+	params := &marvel.EventParams{Characters: []int{1010817}}
+	eventsLimitedToCharacter, err := c2.Events.All(params)
+	assert.NoError(t, err, "Events.All({}) returned an error")
+	assert.Equal(t, eventsLimitedToCharacter, eventsFromCharacter, "Event results do not match")
+}
+
+func TestCharactersSeries(t *testing.T) {
+	c1 := newTestClient(t, "characters_series1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "characters_series2")
+	defer c2.stopRecorder()
+
+	seriesFromCharacter, err := c1.Characters.Series(1009149, nil)
+	assert.NoError(t, err, "Characters.Series() returned an error for 1009149")
+	params := &marvel.SeriesParams{Characters: []int{1009149}}
+	seriesLimitedToCharacter, err := c2.Series.All(params)
+	assert.NoError(t, err, "Series.All({}) returned an error")
+	assert.Equal(t, seriesLimitedToCharacter, seriesFromCharacter, "Series results do not match")
+}
+
+func TestCharactersStories(t *testing.T) {
+	c1 := newTestClient(t, "characters_stories1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "characters_stories2")
+	defer c2.stopRecorder()
+
+	storiesFromCharacter, err := c1.Characters.Stories(1009149, nil)
+	assert.NoError(t, err, "Characters.Stories() returned an error for 1009149")
+	params := &marvel.StoryParams{Characters: []int{1009149}}
+	storiesLimitedToCharacter, err := c2.Stories.All(params)
+	assert.NoError(t, err, "Stories.All({}) returned an error")
+	assert.Equal(t, storiesLimitedToCharacter, storiesFromCharacter, "Story results do not match")
+}

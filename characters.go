@@ -51,6 +51,66 @@ func (chs *CharacterService) Get(characterID int) (*Character, error) {
 	return &wrap.Data.Results[0], nil
 }
 
+// ComicsWrapped returns all comics involving the given character and match the
+// query parameters. The comic slice will be encapsulated by ComicDataContainer
+// and ComicDataWrapper.
+func (chs *CharacterService) ComicsWrapped(characterID int, params *ComicParams) (*ComicDataWrapper, *http.Response, error) {
+	wrap := &ComicDataWrapper{}
+	resp, err := receiveWrapped(chs.sling, fmt.Sprintf("%d/comics", characterID), wrap, params)
+	return wrap, resp, err
+}
+
+// Comics returns all comics involving the given character and match the query parameters.
+func (chs *CharacterService) Comics(characterID int, params *ComicParams) ([]Comic, error) {
+	wrap, _, err := chs.ComicsWrapped(characterID, params)
+	return wrap.Data.Results, err
+}
+
+// EventsWrapped returns all events involving the given character and match the
+// query parameters. The event slice will be encapsulated by EventDataContainer
+// and EventDataWrapper.
+func (chs *CharacterService) EventsWrapped(characterID int, params *EventParams) (*EventDataWrapper, *http.Response, error) {
+	wrap := &EventDataWrapper{}
+	resp, err := receiveWrapped(chs.sling, fmt.Sprintf("%d/events", characterID), wrap, params)
+	return wrap, resp, err
+}
+
+// Events returns all events involving the given character and match the query parameters.
+func (chs *CharacterService) Events(characterID int, params *EventParams) ([]Event, error) {
+	wrap, _, err := chs.EventsWrapped(characterID, params)
+	return wrap.Data.Results, err
+}
+
+// SeriesWrapped returns all series involving the given character and match the
+// query parameters. The series slice will be encapsulated by SeriesDataContainer
+// and SeriesDataWrapper.
+func (chs *CharacterService) SeriesWrapped(characterID int, params *SeriesParams) (*SeriesDataWrapper, *http.Response, error) {
+	wrap := &SeriesDataWrapper{}
+	resp, err := receiveWrapped(chs.sling, fmt.Sprintf("%d/series", characterID), wrap, params)
+	return wrap, resp, err
+}
+
+// Series returns all series involving the given character and match the query parameters.
+func (chs *CharacterService) Series(characterID int, params *SeriesParams) ([]Series, error) {
+	wrap, _, err := chs.SeriesWrapped(characterID, params)
+	return wrap.Data.Results, err
+}
+
+// StoriesWrapped returns all stories involving the given character and match the
+// query parameters. The story slice will be encapsulated by StoryDataContainer
+// and StoryDataWrapper.
+func (chs *CharacterService) StoriesWrapped(characterID int, params *StoryParams) (*StoryDataWrapper, *http.Response, error) {
+	wrap := &StoryDataWrapper{}
+	resp, err := receiveWrapped(chs.sling, fmt.Sprintf("%d/stories", characterID), wrap, params)
+	return wrap, resp, err
+}
+
+// Stories returns all stories involving the given character and match the query parameters.
+func (chs *CharacterService) Stories(characterID int, params *StoryParams) ([]Story, error) {
+	wrap, _, err := chs.StoriesWrapped(characterID, params)
+	return wrap.Data.Results, err
+}
+
 // CharacterDataWrapper provides character wrapper information returned by the API.
 type CharacterDataWrapper struct {
 	DataWrapper
@@ -71,7 +131,7 @@ type Character struct {
 	Modified    Time       `json:"modified,omitempty"`
 	ResourceURI string     `json:"resourceURI,omitempty"`
 	URLs        []URL      `json:"urls,omitempty"`
-	Thumbnail   *Image      `json:"thumbnail,omitempty"`
+	Thumbnail   *Image     `json:"thumbnail,omitempty"`
 	Comics      ComicList  `json:"comics,omitempty"`
 	Stories     StoryList  `json:"stories,omitempty"`
 	Events      EventList  `json:"events,omitempty"`
