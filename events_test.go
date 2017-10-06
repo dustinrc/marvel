@@ -66,3 +66,73 @@ func TestEventGetBadID(t *testing.T) {
 	assert.Error(t, err)
 	assert.Nil(t, event, "Event should have been nil")
 }
+
+func TestEventsCharacters(t *testing.T) {
+	c1 := newTestClient(t, "events_characters1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "events_characters2")
+	defer c2.stopRecorder()
+
+	charactersFromEvent, err := c1.Events.Characters(227, nil)
+	assert.NoError(t, err, "Events.Characters() returned an error for 227")
+	params := &marvel.CharacterParams{Events: []int{227}}
+	charactersLimitedToEvent, err := c2.Characters.All(params)
+	assert.NoError(t, err, "Characters.All({}) returned an error")
+	assert.Equal(t, charactersLimitedToEvent, charactersFromEvent, "Character results do not match")
+}
+
+func TestEventsComics(t *testing.T) {
+	c1 := newTestClient(t, "events_comics1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "events_comics2")
+	defer c2.stopRecorder()
+
+	comicsFromEvent, err := c1.Events.Comics(227, nil)
+	assert.NoError(t, err, "Events.Comics() returned an error for 227")
+	params := &marvel.ComicParams{Events: []int{227}}
+	comicsLimitedToEvent, err := c2.Comics.All(params)
+	assert.NoError(t, err, "Comics.All({}) returned an error")
+	assert.Equal(t, comicsLimitedToEvent, comicsFromEvent, "Comic results do not match")
+}
+
+func TestEventsCreators(t *testing.T) {
+	c1 := newTestClient(t, "events_creators1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "events_creators2")
+	defer c2.stopRecorder()
+
+	creatorsFromEvent, err := c1.Events.Creators(227, nil)
+	assert.NoError(t, err, "Events.Creators() returned an error for 227")
+	params := &marvel.CreatorParams{Events: []int{227}}
+	creatorsLimitedToEvent, err := c2.Creators.All(params)
+	assert.NoError(t, err, "Creators.All({}) returned an error")
+	assert.Equal(t, creatorsLimitedToEvent, creatorsFromEvent, "Creator results do not match")
+}
+
+func TestEventsSeries(t *testing.T) {
+	c1 := newTestClient(t, "events_series1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "events_series2")
+	defer c2.stopRecorder()
+
+	seriesFromEvent, err := c1.Events.Series(227, nil)
+	assert.NoError(t, err, "Events.Series() returned an error for 227")
+	params := &marvel.SeriesParams{Events: []int{227}}
+	seriesLimitedToEvent, err := c2.Series.All(params)
+	assert.NoError(t, err, "Series.All({}) returned an error")
+	assert.Equal(t, seriesLimitedToEvent, seriesFromEvent, "Series results do not match")
+}
+
+func TestEventsStories(t *testing.T) {
+	c1 := newTestClient(t, "events_stories1")
+	defer c1.stopRecorder()
+	c2 := newTestClient(t, "events_stories2")
+	defer c2.stopRecorder()
+
+	storiesFromEvent, err := c1.Events.Stories(227, nil)
+	assert.NoError(t, err, "Events.Stories() returned an error for 227")
+	params := &marvel.StoryParams{Events: []int{227}}
+	storiesLimitedToEvent, err := c2.Stories.All(params)
+	assert.NoError(t, err, "Stories.All({}) returned an error")
+	assert.Equal(t, storiesLimitedToEvent, storiesFromEvent, "Story results do not match")
+}
