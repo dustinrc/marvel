@@ -99,30 +99,30 @@ func (sts *StoryService) Creators(storyID int, params *CreatorParams) ([]Creator
 // EventsWrapped returns all events involving the given story and match the
 // query parameters. The event slice will be encapsulated by EventDataContainer
 // and EventDataWrapper.
-func (sts *StoryService) EventsWrapped(eventID int, params *EventParams) (*EventDataWrapper, *http.Response, error) {
+func (sts *StoryService) EventsWrapped(storyID int, params *EventParams) (*EventDataWrapper, *http.Response, error) {
 	wrap := &EventDataWrapper{}
-	resp, err := receiveWrapped(sts.sling, fmt.Sprintf("%d/events", eventID), wrap, params)
+	resp, err := receiveWrapped(sts.sling, fmt.Sprintf("%d/events", storyID), wrap, params)
 	return wrap, resp, err
 }
 
-// Events returns all events involving the given series and match the query parameters.
-func (sts *StoryService) Events(eventID int, params *EventParams) ([]Event, error) {
-	wrap, _, err := sts.EventsWrapped(eventID, params)
+// Events returns all events involving the given story and match the query parameters.
+func (sts *StoryService) Events(storyID int, params *EventParams) ([]Event, error) {
+	wrap, _, err := sts.EventsWrapped(storyID, params)
 	return wrap.Data.Results, err
 }
 
-// SeriesWrapped returns all series involving the given series and match the
+// SeriesWrapped returns all series involving the given story and match the
 // query parameters. The series slice will be encapsulated by SeriesDataContainer
 // and SeriesDataWrapper.
-func (sts *StoryService) SeriesWrapped(seriesID int, params *SeriesParams) (*SeriesDataWrapper, *http.Response, error) {
+func (sts *StoryService) SeriesWrapped(storyID int, params *SeriesParams) (*SeriesDataWrapper, *http.Response, error) {
 	wrap := &SeriesDataWrapper{}
-	resp, err := receiveWrapped(sts.sling, fmt.Sprintf("%d/series", seriesID), wrap, params)
+	resp, err := receiveWrapped(sts.sling, fmt.Sprintf("%d/series", storyID), wrap, params)
 	return wrap, resp, err
 }
 
-// Series returns all series involving the given series and match the query parameters.
-func (sts *StoryService) Series(seriesID int, params *SeriesParams) ([]Series, error) {
-	wrap, _, err := sts.SeriesWrapped(seriesID, params)
+// Series returns all series involving the given story and match the query parameters.
+func (sts *StoryService) Series(storyID int, params *SeriesParams) ([]Series, error) {
+	wrap, _, err := sts.SeriesWrapped(storyID, params)
 	return wrap.Data.Results, err
 }
 

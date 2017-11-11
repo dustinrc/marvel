@@ -99,15 +99,15 @@ func (srs *SeriesService) Creators(seriesID int, params *CreatorParams) ([]Creat
 // EventsWrapped returns all events involving the given series and match the
 // query parameters. The event slice will be encapsulated by EventDataContainer
 // and EventDataWrapper.
-func (srs *SeriesService) EventsWrapped(eventID int, params *EventParams) (*EventDataWrapper, *http.Response, error) {
+func (srs *SeriesService) EventsWrapped(seriesID int, params *EventParams) (*EventDataWrapper, *http.Response, error) {
 	wrap := &EventDataWrapper{}
-	resp, err := receiveWrapped(srs.sling, fmt.Sprintf("%d/events", eventID), wrap, params)
+	resp, err := receiveWrapped(srs.sling, fmt.Sprintf("%d/events", seriesID), wrap, params)
 	return wrap, resp, err
 }
 
 // Events returns all events involving the given series and match the query parameters.
-func (srs *SeriesService) Events(eventID int, params *EventParams) ([]Event, error) {
-	wrap, _, err := srs.EventsWrapped(eventID, params)
+func (srs *SeriesService) Events(seriesID int, params *EventParams) ([]Event, error) {
+	wrap, _, err := srs.EventsWrapped(seriesID, params)
 	return wrap.Data.Results, err
 }
 
