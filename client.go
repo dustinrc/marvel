@@ -50,18 +50,30 @@ func NewClient(authenticator Authenticator, httpClient *http.Client) *Client {
 	return c
 }
 
-// Request returns the currently prepared HTTP request.
-func (c *Client) Request() (*http.Request, error) {
-	return c.sling.Request()
+// Request returns a prepared HTTP request for the client.
+func (c *Client) Request(pathURL string, params interface{}) (*http.Request, error) {
+	return request(c.sling, pathURL, params)
+}
+
+// request returns a prepared HTTP request corresponding with the provided sling.
+func request(sling *sling.Sling, pathURL string, paramsV interface{}) (*http.Request, error) {
+	// all request to the API should be GETs
+	return sling.New().Get(pathURL).QueryStruct(paramsV).Request()
 }
 
 // receiveWrapped prepares a request and unmarshals it into the provided wrapper.
 func receiveWrapped(sling *sling.Sling, pathURL string, wrapperV, paramsV interface{}) (*http.Response, error) {
+	req, err := request(sling, pathURL, paramsV)
+	if err != nil {
+		return nil, err
+	}
+
 	apiErr := &APIError{}
-	resp, err := sling.New().Get(pathURL).QueryStruct(paramsV).Receive(wrapperV, apiErr)
+	resp, err := sling.Do(req, wrapperV, apiErr)
 	if err == nil && apiErr.Code != nil {
 		err = apiErr
 	}
+
 	return resp, err
 }
 

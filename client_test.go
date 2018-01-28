@@ -72,7 +72,7 @@ func TestNewClient(t *testing.T) {
 	auth := &mockAuth{}
 	c := marvel.NewClient(auth, nil)
 
-	req, err := c.Request()
+	req, err := c.Request("", nil)
 
 	assert.Nil(t, err)
 	assert.Equal(t, "GET", req.Method)
